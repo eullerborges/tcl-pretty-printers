@@ -66,6 +66,10 @@ class TclIntPrinter(TclObjPrinter):
     def to_string(self):
         return self.val["internalRep"]["longValue"]
 
+class TclDoublePrinter(TclObjPrinter):
+    def to_string(self):
+        return self.val["internalRep"]["doubleValue"]
+
 class TclListPrinter(object):
     """
     Printer for Tcl Lists.
@@ -226,6 +230,8 @@ def tcl_lookup_function(val):
             return TclDictPrinter(val)
         elif type_name in ["int", "booleanString"]:
             return TclIntPrinter(val)
+        elif type_name == "double":
+            return TclDoublePrinter(val)
         else:
             return TclObjPrinter(val)
 
