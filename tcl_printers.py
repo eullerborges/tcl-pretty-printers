@@ -44,6 +44,28 @@ class TclObjPrinter(object):
     def display_hint(self):
         return "string"
 
+class TclIntPrinter(TclObjPrinter):
+    """
+    Default printer for Tcl's int, long, boolean, and possibly Tcl_WideInt.
+
+    Note that Tcl does not really differentiate long or boolean from int on
+    8.6, and thus these types will be handled by this printer.
+
+    Tcl_WideInt might be a C 'long' under the hood if TCL_WIDE_INT_IS_LONG was
+    set during the compilation and will be handled by this printer in that
+    case.
+
+    NOTE: Tcl booleans parsed from strings could possibly be handled by another
+    printer since they have a different type ("booleanString") and can thus be
+    differentiated to a C++ bool. The issue with that would be the
+    inconsistency with bools created by Tcl_NewBooleanObj, which have an
+    integer representation. As even the former have a valid integer
+    representation after the parsing, they're not differentiated in this
+    implementation.
+    """
+    def to_string(self):
+        return self.val["internalRep"]["longValue"]
+
 class TclListPrinter(object):
     """
     Printer for Tcl Lists.
@@ -202,6 +224,8 @@ def tcl_lookup_function(val):
             return TclListPrinter(val)
         elif type_name == "dict":
             return TclDictPrinter(val)
+        elif type_name in ["int", "booleanString"]:
+            return TclIntPrinter(val)
         else:
             return TclObjPrinter(val)
 
