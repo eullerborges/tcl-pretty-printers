@@ -3,7 +3,7 @@ This repository provides GDB pretty printers for Tcl objects of the [Tcl C API](
 
 The pretty printers use implementation details of the Tcl library to support printing Tcl containers, strings, and numerals just like [libstdc++ pretty printers](https://www.tcl.tk/man/tcl8.6/TclLib/contents.htm).
 
-The exemple below shows how the pretty printers work for a Tcl dictionary that contains different types of Tcl objects:
+The example below shows how the pretty printers work for a Tcl dictionary that contains different types of Tcl objects:
 ~~~ gdb
 (gdb) set print pretty on               # Use indentation to print map elements   
 (gdb) set print array on                # Use indentation to print array elements
@@ -40,7 +40,6 @@ To use the pretty printers, clone this repository to some common location and ad
 ``` gdbinit
 python                                                   
 import sys
-# This is a sample file with the necessary bits to add to gdbinit to make the pretty printers work
 sys.path.append('/path/to/tcl-pretty-printers')
 from tcl_printers import register_tcl_printers
 register_tcl_printers(None)                                                                                                                                                                   
