@@ -1,5 +1,5 @@
 # tcl-pretty-printers
-This repository provides GDB pretty printers for Tcl objects of the [Tcl C API](https://www.tcl.tk/man/tcl8.6/TclLib/contents.htm).
+This repository provides GDB pretty printers for Tcl objects of the [Tcl C API](https://www.tcl.tk/man/tcl8.6/TclLib/contents.htm) (i.e., `Tcl_Obj` structures).
 
 The pretty printers use implementation details of the Tcl library to support printing Tcl containers, strings, and numerals just like [libstdc++ pretty printers](https://www.tcl.tk/man/tcl8.6/TclLib/contents.htm).
 
