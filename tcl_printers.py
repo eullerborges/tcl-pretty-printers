@@ -5,11 +5,12 @@ This implementations tries its best to avoid calling functions and using
 symbols that might be unavailable on optimized builds. The containers are
 printed in a similar way to STL containers with their default pretty printers.
 """
-import re
-
 import gdb
 
 
+# Auxiliary lambdas to lookup some of the needed types in GDB.
+# This has to be done through lambdas because for some reason setting this
+# upfront does not work properly: casting renders incorrect/inconsistent results.
 INT_T = lambda: gdb.lookup_type("int")
 HASH_TABLE_T = lambda: gdb.lookup_type("Tcl_HashTable")
 HASH_ENTRY_T = lambda: gdb.lookup_type("Tcl_HashEntry")
@@ -215,6 +216,10 @@ class TclDictPrinter(object):
         return 'map'
 
 def tcl_lookup_function(val):
+    """
+    This lookup functions determines what pretty printers should be used for
+    which Tcl object, and returns the instantiated printer.
+    """
     lookup_tag = val.type.tag
     if lookup_tag is None:
         return
@@ -237,6 +242,9 @@ def tcl_lookup_function(val):
 
 
 def register_tcl_printers(objfile):
+    """
+    Registers the pretty printers for the Tcl objects on gdb.
+    """
     if not objfile:
         objfile = gdb
     objfile.pretty_printers.append(tcl_lookup_function)
